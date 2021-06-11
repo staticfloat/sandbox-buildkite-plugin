@@ -1,0 +1,31 @@
+name: Sandbox
+description: Sandbox execution within nestable user namespaces
+author: https://github.com/staticfloat
+configuration:
+  properties:
+    # This defines the rootfs we will be launching inside of; users must provide both the URL and the treehash
+    rootfs_url:
+      type: string
+    rootfs_treehash:
+      type: string
+
+    # Workspaces are read-write mappings into the sandbox; defined as strings of the form "host_path:sandbox_path"
+    workspaces:
+      type: array
+
+    # If this is set (defaults to true) we will read the `BUILDKITE_ENV_FILE` and automatically
+    # make the environment variables set within a pipeline available to the sandbox
+    inherit_environment:
+      type: boolean
+    # If there are extra environment variables (e.g. variables defined within the agent and not
+    # the pipeline.yml) list them here to explicitly include them in the environment of the sandbox.
+    extra_environment:
+      type: array
+
+    # Allow setting the UID and GID of the sandbox user (defaults to the current user)
+    uid:
+      type: string
+    gid:
+      type: string
+    
+  additionalProperties: false

@@ -1,0 +1,10 @@
+version: '3'
+services:
+  tests:
+    build: tests
+    volumes:
+      - ".:/plugin"
+      # This just speeds up testing
+      - "./tests/depot_cache:/root/.julia"
+    # We need to run `Sandbox.jl` within this docker container
+    privileged: true
