@@ -27,5 +27,9 @@ configuration:
       type: string
     gid:
       type: string
+
+    # Allow setting the initial working directory within the sandbox (defaults to `"/"`)
+    pwd:
+      type: string
     
   additionalProperties: false

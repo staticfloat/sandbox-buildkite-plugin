@@ -31,6 +31,7 @@ extra_envs = extract_env_array("EXTRA_ENVIRONMENT")
 workspaces = [reverse(split(pair, ":")) for pair in extract_env_array("WORKSPACES")]
 uid = parse(Int, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_UID", string(Sandbox.getuid())))
 gid = parse(Int, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_GID", string(Sandbox.getgid())))
+pwd = get(ENV, "BUILDKITE_PLUGIN_SANDBOX_PWD", "/")
 
 # First, download the rootfs
 if !Pkg.Artifacts.artifact_exists(rootfs_treehash)
@@ -66,6 +67,7 @@ config = SandboxConfig(
     verbose,
     uid,
     gid,
+    pwd,
 )
 with_executor() do exe
     run(exe, config, `/bin/bash -c "$command"`)
