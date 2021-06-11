@@ -12,8 +12,12 @@ configuration:
     # Workspaces are read-write mappings into the sandbox; defined as strings of the form "host_path:sandbox_path"
     workspaces:
       type: array
+    # If this is set (defaults to `true`) we will automatically workspace in the Julia depot and executable
+    # This allows julia package installs to propagate into the sandbox
+    auto_workspace_depot:
+      type: boolean
 
-    # If this is set (defaults to true) we will read the `BUILDKITE_ENV_FILE` and automatically
+    # If this is set (defaults to `true`) we will read the `BUILDKITE_ENV_FILE` and automatically
     # make the environment variables set within a pipeline available to the sandbox
     inherit_environment:
       type: boolean

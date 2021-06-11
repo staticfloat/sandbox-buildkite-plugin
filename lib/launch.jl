@@ -21,17 +21,27 @@ function buildkite_warn(message::String)
 end
 
 # Parse out everything passed to us via the environment
+
+# Rootfs parameters
 rootfs_url = ENV["BUILDKITE_PLUGIN_SANDBOX_ROOTFS_URL"]
 rootfs_treehash = Base.SHA1(ENV["BUILDKITE_PLUGIN_SANDBOX_ROOTFS_TREEHASH"])
-command = ENV["BUILDKITE_COMMAND"]
-env_file = ENV["BUILDKITE_ENV_FILE"]
-verbose = parse(Bool, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_VERBOSE", "false"))
+
+# Mappings and environment changes
 inherit_environment = parse(Bool, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_INHERIT_ENVIRONMENT", "true"))
 extra_envs = extract_env_array("EXTRA_ENVIRONMENT")
 workspaces = [reverse(split(pair, ":")) for pair in extract_env_array("WORKSPACES")]
+auto_workspace_depot = parse(Bool, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_AUTO_WORKSPACE_DEPOT", "true"))
+
+# Direct sandbox parameters
+verbose = parse(Bool, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_VERBOSE", "false"))
 uid = parse(Int, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_UID", string(Sandbox.getuid())))
 gid = parse(Int, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_GID", string(Sandbox.getgid())))
 pwd = get(ENV, "BUILDKITE_PLUGIN_SANDBOX_PWD", "/")
+
+# Things we inherit directly from buildkite
+command = ENV["BUILDKITE_COMMAND"]
+env_file = ENV["BUILDKITE_ENV_FILE"]
+
 
 # First, download the rootfs
 if !Pkg.Artifacts.artifact_exists(rootfs_treehash)
@@ -61,6 +71,13 @@ end
 workspace_mappings = Dict{String,String}()
 for (sandbox_path, host_path) in workspaces
     workspace_mappings[sandbox_path] = abspath(host_path)
+end
+
+# If we should auto-workspace our depot, do so!
+if auto_workspace_depot
+    depot_path = ENV["JULIA_DEPOT_PATH"]
+    workspace_mappings[depot_path] = depot_path
+    env_mappings["JULIA_DEPOT_PATH"] = depot_path
 end
 
 config = SandboxConfig(

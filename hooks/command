@@ -31,9 +31,12 @@ if ! [[ "${BUILDKITE_PLUGIN_SANDBOX_ROOTFS_TREEHASH}" =~ ^[[:xdigit:]]{40}$ ]]; 
 fi
 
 # Instantiate our `lib/` environment
-echo "--- Instantiating sandbox environment"
+echo "--- Instantiating sandbox environment in host"
 julia --project="${SANDBOX_REPO}/lib" -e 'using Pkg; Pkg.instantiate()'
 
 # Run user command
 echo "+++ Running user command (within provided rootfs)"
 julia --project="${SANDBOX_REPO}/lib" "${SANDBOX_REPO}/lib/launch.jl"
+
+# Put our wrappers on the PATH
+export PATH="${SANDBOX_REPO}/wrappers:${PATH}"
