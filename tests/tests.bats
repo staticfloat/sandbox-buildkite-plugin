@@ -45,6 +45,7 @@ export BUILDKITE_PLUGIN_SANDBOX_VERBOSE=true
 
     # Next, workspace some stuff in, add some environment variables, etc...
     dir="$(mktemp -d)"
+    pushd "${dir}"
     mkdir -p "${dir}/mount1" "${dir}/mount2"
     echo "the contents of bar.txt" > "${dir}/mount2/bar.txt"
     echo "MSG=bar"   >> "${dir}/env"
@@ -53,7 +54,7 @@ export BUILDKITE_PLUGIN_SANDBOX_VERBOSE=true
     export BUILDKITE_COMMAND='echo ${MSG} ${BAZ} ${QUX} > /tmp/mount1/foo.txt; cat /tmp/mount2/bar.txt'
     export BUILDKITE_ENV_FILE="${dir}/env"
     export BUILDKITE_PLUGIN_SANDBOX_WORKSPACES_0="${dir}/mount1:/tmp/mount1"
-    export BUILDKITE_PLUGIN_SANDBOX_WORKSPACES_1="${dir}/mount2:/tmp/mount2"
+    export BUILDKITE_PLUGIN_SANDBOX_WORKSPACES_1="./mount2:/tmp/mount2"
     export BUILDKITE_PLUGIN_SANDBOX_EXTRA_ENVIRONMENT_0="QUX"
     export QUX=yolo
 
@@ -66,5 +67,6 @@ export BUILDKITE_PLUGIN_SANDBOX_VERBOSE=true
 
     [[ -f "${dir}/mount1/foo.txt" ]]
     [[ "$(cat "${dir}/mount1/foo.txt")" == "bar spoon yolo" ]]
+    popd
     rm -rf "${dir}"
 }

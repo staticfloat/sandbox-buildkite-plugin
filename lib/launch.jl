@@ -57,11 +57,17 @@ for e in extra_envs
     end
 end
 
+# Workspace host paths must be absolute, so convert to absolute here:
+workspace_mappings = Dict{String,String}()
+for (sandbox_path, host_path) in workspaces
+    workspace_mappings[sandbox_path] = abspath(host_path)
+end
+
 config = SandboxConfig(
     # The only read-only mapping we mount is the rootfs we previously downloaded as an artifact
     Dict("/" => Pkg.Artifacts.artifact_path(rootfs_treehash)),
     # The read-write mappings are provided as the workspaces arguments
-    Dict{String,String}(workspaces),
+    workspace_mappings,
     # Our environment mappings
     env_mappings;
     verbose,
