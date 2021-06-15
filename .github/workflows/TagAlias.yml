@@ -1,0 +1,21 @@
+name: TagAlias
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  TagAlias:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the major version
+        id: get_version
+        run: echo ::set-output name=major::$(echo $GITHUB_REF | grep -o 'v[[:digit:]]*')
+
+      - name: Tag the alias
+        uses: richardsimko/update-tag@v1
+        with:
+          tag_name: ${{ steps.get_version.outputs.major }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
