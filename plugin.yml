@@ -9,27 +9,14 @@ configuration:
     rootfs_treehash:
       type: string
 
-    # Workspaces are read-write mappings into the sandbox; defined as strings of the form "host_path:sandbox_path"
+    # Allow mounting arbitrary read-write directories; specified as `host:sandbox`
     workspaces:
-      type: array
-
-    # If this is set (defaults to true) we will read the `BUILDKITE_ENV_FILE` and automatically
-    # make the environment variables set within a pipeline available to the sandbox
-    inherit_environment:
-      type: boolean
-    # If there are extra environment variables (e.g. variables defined within the agent and not
-    # the pipeline.yml) list them here to explicitly include them in the environment of the sandbox.
-    extra_environment:
       type: array
 
     # Allow setting the UID and GID of the sandbox user (defaults to the current user)
     uid:
       type: string
     gid:
-      type: string
-
-    # Allow setting the initial working directory within the sandbox (defaults to `"/"`)
-    pwd:
       type: string
     
   additionalProperties: false

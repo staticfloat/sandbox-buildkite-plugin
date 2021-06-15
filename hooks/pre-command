@@ -15,10 +15,6 @@ function die() {
 }
 
 
-if [[ -z "${BUILDKITE_COMMAND:-}" ]]; then
-    die "Sandbox requires a user command"
-fi
-
 if [[ ! -v "BUILDKITE_PLUGIN_SANDBOX_ROOTFS_URL" ]]; then
     die "Sandbox requires a rootfs tarball URL"
 fi
@@ -26,14 +22,18 @@ fi
 if [[ ! -v "BUILDKITE_PLUGIN_SANDBOX_ROOTFS_TREEHASH" ]]; then
     die "Sandbox requires a rootfs treehash"
 fi
-if ! [[ "${BUILDKITE_PLUGIN_SANDBOX_ROOTFS_TREEHASH}" =~ ^[[:xdigit:]]{40}$ ]]; then
+if ! [[ "${BUILDKITE_PLUGIN_SANDBOX_ROOTFS_TREEHASH}"  =~ ^[[:xdigit:]]{40}$ ]]; then
     die "Sandbox rootfs treehash not 40 hexadecimal characters"
 fi
 
-# Instantiate our `lib/` environment
+# Install `Sandbox` and `Artifacts` globally
 echo "--- Instantiating sandbox environment"
-julia --project="${SANDBOX_REPO}/lib" -e 'using Pkg; Pkg.instantiate()'
+julia --project="${SANDBOX_REPO}/lib" -e "using Pkg; Pkg.instantiate()"
 
-# Run user command
-echo "+++ Running user command (within provided rootfs)"
-julia --project="${SANDBOX_REPO}/lib" "${SANDBOX_REPO}/lib/launch.jl"
+# Perform absurd bash overwriting, so that all future commands are sandboxed
+echo "--- Installing bash override"
+cp -va /bin/bash /bin/truebash
+julia --project="${SANDBOX_REPO}/lib" "${SANDBOX_REPO}/lib/generate_sandboxed_bash.jl" "${BUILDKITE_PLUGIN_SANDBOX_SHELL:-/bin/bash}"
+
+echo "--- cat ${BUILDKITE_PLUGIN_SANDBOX_SHELL:-/bin/bash}"
+cat "${BUILDKITE_PLUGIN_SANDBOX_SHELL:-/bin/bash}"

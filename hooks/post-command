@@ -1,0 +1,5 @@
+#!/bin/truebash
+
+# Un-do our craziness
+echo "Removing sandbox /bin/bash overrride"
+mv /bin/truebash /bin/bash
