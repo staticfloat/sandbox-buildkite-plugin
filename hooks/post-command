@@ -1,5 +1,12 @@
 #!/bin/truebash
 
-# Un-do our craziness
+# Determine the persistence directory used and clear it out if it exists
+PERSIST_DIR=$(sed -n -E 's/.*--persist ([^ ]+).*/\1/p' </bin/bash 2>/dev/null)
+if [[ -d "${PERSIST_DIR}" ]]; then
+    echo "Clearing out temporary persistence directory ${PERSIST_DIR}"
+    rm -rf "${PERSIST_DIR}"
+fi
+
+# Un-do our crazy `bash` override
 echo "Removing sandbox /bin/bash overrride"
 mv /bin/truebash /bin/bash

@@ -93,10 +93,10 @@ uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
 
 [[Sandbox]]
-deps = ["JLLWrappers", "LazyArtifacts", "Libdl", "Preferences", "Random", "SHA", "Scratch", "TOML", "Tar", "UserNSSandbox_jll"]
-git-tree-sha1 = "c8ff0fbea5cab2b89642221afe1b03fda1df0621"
+deps = ["LazyArtifacts", "Libdl", "Preferences", "Random", "SHA", "Scratch", "TOML", "Tar", "UserNSSandbox_jll"]
+git-tree-sha1 = "36cd9e7d56858dabcd6fd65a9414901443ceaea9"
 uuid = "9307e30f-c43e-9ca7-d17c-c2dc59df670d"
-version = "1.0.0"
+version = "1.0.1"
 
 [[Scratch]]
 deps = ["Dates"]

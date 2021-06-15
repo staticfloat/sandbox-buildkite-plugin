@@ -45,7 +45,7 @@ add_env_dir!(workspace_mappings, "BUILDKITE_BUILD_PATH")
 # Add in the plugins path, since we may want to run plugins within the sandbox
 add_env_dir!(workspace_mappings, "BUILDKITE_PLUGINS_PATH")
 
-# `/tmp` always gets mounted in, as some plugins want access to that
+# `/tmp` always gets mounted in, since buildkite writes hook wrappers out there!
 add_env_dir!(workspace_mappings, "TMPDIR"; default="/tmp")
 
 # Add user-specified workspaces (note they must all be absolute paths)
@@ -83,25 +83,26 @@ config = SandboxConfig(
     verbose,
     uid,
     gid,
+    persist=true,
 )
-with_executor() do exe
-    c = Sandbox.build_executor_command(exe, config, ``)
-    # Write out `/bin/bash` wrapper script that just invokes our `sandbox` executable.
-    open(ARGS[1], write=true) do io
-        println(io, """
-        #!/bin/truebash
 
-        # Don't sandbox `sandbox-buildkite-plugin` itself
-        if [[ "\${BUILDKITE_PLUGIN_NAME}" == "SANDBOX" ]]; then
-            exec /bin/truebash "\$@"
-        fi
+exe = UnprivilegedUserNamespacesExecutor()
+c = Sandbox.build_executor_command(exe, config, ``)
+# Write out `/bin/bash` wrapper script that just invokes our `sandbox` executable.
+open(ARGS[1], write=true) do io
+    println(io, """
+    #!/bin/truebash
 
-        # Ensure that PATH contains the bare minimum that any sane rootfs might need
-        export PATH="\${PATH}:/usr/local/bin:/usr/bin:/bin"
+    # Don't sandbox `sandbox-buildkite-plugin` itself
+    if [[ "\${BUILDKITE_PLUGIN_NAME}" == "SANDBOX" ]]; then
+        exec /bin/truebash "\$@"
+    fi
 
-        # Sandbox invocation
-        $(join(c.exec, " ")) /bin/bash "\$@"
-        """)
-    end
-    chmod(ARGS[1], 0o755)
+    # Ensure that PATH contains the bare minimum that any sane rootfs might need
+    export PATH="\${PATH}:/usr/local/bin:/usr/bin:/bin"
+
+    # Sandbox invocation
+    $(join(c.exec, " ")) /bin/bash "\$@"
+    """)
 end
+chmod(ARGS[1], 0o755)
