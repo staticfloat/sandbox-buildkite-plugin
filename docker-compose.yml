@@ -6,5 +6,9 @@ services:
       - ".:/plugin"
       # This just speeds up testing
       - "./tests/depot_cache:/root/.julia"
+      # Persistence testing requires a non-overlayfs home
+      - "./tests/sandbox_persistence:/sandbox_persistence"
+    environment:
+      - SANDBOX_PERSISTENCE_DIR=/sandbox_persistence
     # We need to run `Sandbox.jl` within this docker container
     privileged: true

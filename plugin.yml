@@ -10,6 +10,12 @@ configuration:
       type: string
 
     # Allow mounting arbitrary read-write directories; specified as `host:sandbox`
+    # Note that the sandbox automatically gets access to:
+    # - `${BUILDKITE_BUILD_PATH}`: the repository checkout path
+    # - `${BUILDKITE_PLUGINS_PATH}`: the plugins directory
+    # - `${TMPDIR}`: the temporary directory, since many plugins require communicating through it
+    # - `buildkite-agent`: wherever `buildkite-agent` is located, it gets mapped in as `/usr/bin/buildkite-agent`.
+    # - `/etc/resolv.conf`: We assume you want to be able to resolve DNS queries.
     workspaces:
       type: array
 
