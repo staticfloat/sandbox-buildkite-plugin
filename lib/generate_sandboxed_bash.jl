@@ -36,6 +36,9 @@ function add_env_dir!(dict, env_var; default=nothing)
     return dict
 end
 
+# Super-simple environment expansion
+envexpand(s::String) = replace(s, r"\${[a-zA-Z0-9_]+}" => m -> get(ENV, m[3:end-1], m))
+
 # read-write mount mappings
 workspace_mappings = Dict{String,String}()
 
@@ -50,7 +53,9 @@ add_env_dir!(workspace_mappings, "TMPDIR"; default="/tmp")
 
 # Add user-specified workspaces (note they must all be absolute paths)
 for (sandbox_path, host_path) in workspaces
-    workspace_mappings[sandbox_path] = abspath(host_path)
+    # Also perform ENV-expansion.  Note that to make parsing easier, we
+    # only support `${FOO}` style expansion, not `$FOO` style.
+    workspace_mappings[envexpand(sandbox_path)] = envexpand(abspath(host_path))
 end
 
 
