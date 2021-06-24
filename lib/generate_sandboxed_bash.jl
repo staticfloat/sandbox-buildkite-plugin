@@ -56,7 +56,7 @@ add_env_dir!(workspace_mappings, "TMPDIR"; default="/tmp")
 for (sandbox_path, host_path) in workspaces
     # Also perform ENV-expansion.  Note that to make parsing easier, we
     # only support `${FOO}` style expansion, not `$FOO` style.
-    workspace_mappings[envexpand(sandbox_path)] = envexpand(abspath(host_path))
+    workspace_mappings[envexpand(sandbox_path)] = abspath(envexpand(host_path))
 end
 
 
