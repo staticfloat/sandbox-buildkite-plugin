@@ -24,5 +24,9 @@ configuration:
       type: string
     gid:
       type: string
+
+    # If this is set, causes all sorts of debugging information to be printed out
+    verbose:
+      type: boolean
     
   additionalProperties: false
