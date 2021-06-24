@@ -37,7 +37,8 @@ function add_env_dir!(dict, env_var; default=nothing)
 end
 
 # Super-simple environment expansion
-envexpand(s::String) = replace(s, r"\${[a-zA-Z0-9_]+}" => m -> get(ENV, m[3:end-1], m))
+envexpand(s::AbstractString) = replace(s, r"\${[a-zA-Z0-9_]+}" => m -> get(ENV, m[3:end-1], m))
+
 
 # read-write mount mappings
 workspace_mappings = Dict{String,String}()
