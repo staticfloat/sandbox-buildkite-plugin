@@ -76,7 +76,7 @@ if parse(Bool, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_MAP_BUILDKITE_AGENT", "false")
         read_only_mappings["/usr/bin/buildkite-agent"] = buildkite_agent_path
     else
         msg = string(
-            "The `buildkite_agent` configuration property is set to true, ",
+            "The `map_buildkite_agent` configuration property is set to true, ",
             "but the `buildkite-agent` binary was not found in the path.",
         )
         @warn msg
