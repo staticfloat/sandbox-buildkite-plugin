@@ -10,3 +10,6 @@ fi
 # Un-do our crazy `bash` override
 echo "Removing sandbox /bin/bash overrride"
 mv /bin/truebash /bin/bash
+
+# Upload artifacts
+julia --project="${SANDBOX_REPO}/lib" "${SANDBOX_REPO}/lib/artifacts_upload.jl"

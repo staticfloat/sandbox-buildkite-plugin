@@ -1,17 +1,7 @@
 #!/usr/bin/env julia
 using Pkg, Sandbox
 
-# Helper to extract buildkite environment arrays
-function extract_env_array(prefix::String)
-    envname(idx::Int) = string(prefix, "_", idx)
-    idx = 0
-    array = String[]
-    while haskey(ENV, envname(idx))
-        push!(array, ENV[envname(idx)])
-        idx += 1
-    end
-    return array
-end
+include(joinpath(@__DIR__, "utils.jl"))
 
 rootfs_url = ENV["BUILDKITE_PLUGIN_SANDBOX_ROOTFS_URL"]
 rootfs_treehash = Base.SHA1(ENV["BUILDKITE_PLUGIN_SANDBOX_ROOTFS_TREEHASH"])
@@ -59,7 +49,10 @@ for (sandbox_path, host_path) in workspaces
     workspace_mappings[envexpand(sandbox_path)] = abspath(envexpand(host_path))
 end
 
-
+workspace_mappings[get_download_dir_guest()] = get_buildkite_download_dir_host()
+workspace_mappings[get_upload_dir_guest()]   = get_buildkite_upload_dir_host()
+@info "Inside the sandbox, the Buildkite download directory will be: $(get_download_dir_guest())"
+@info "Inside the sandbox, the Buildkite upload directory will be:   $(get_upload_dir_guest())"
 
 # Read-only mounts that we'll scatter throughout the build image
 read_only_mappings = Dict{String,String}(

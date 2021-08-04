@@ -34,6 +34,9 @@ fi
 echo "--- Instantiating sandbox environment"
 julia --project="${SANDBOX_REPO}/lib" -e "using Pkg; Pkg.instantiate()"
 
+# Download artifacts
+julia --project="${SANDBOX_REPO}/lib" "${SANDBOX_REPO}/lib/artifacts_download.jl"
+
 # Perform absurd bash overwriting, so that all future commands are sandboxed
 echo "--- Installing bash override"
 cp -va /bin/bash /bin/truebash

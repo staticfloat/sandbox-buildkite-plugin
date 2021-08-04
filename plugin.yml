@@ -25,8 +25,16 @@ configuration:
     gid:
       type: string
 
+    # Filenames of artifacts to download at the beginning of the job (in the `pre-command` hook)
+    artifacts_download:
+      type: array
+
+    # Filenames of artifacts to upload at the end of the job (in the `post-command` hook)
+    artifacts_upload:
+      type: array
+
     # If this is set, causes all sorts of debugging information to be printed out
     verbose:
       type: boolean
-    
+
   additionalProperties: false
