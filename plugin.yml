@@ -14,7 +14,6 @@ configuration:
     # - `${BUILDKITE_BUILD_PATH}`: the repository checkout path
     # - `${BUILDKITE_PLUGINS_PATH}`: the plugins directory
     # - `${TMPDIR}`: the temporary directory, since many plugins require communicating through it
-    # - `buildkite-agent`: wherever `buildkite-agent` is located, it gets mapped in as `/usr/bin/buildkite-agent`.
     # - `/etc/resolv.conf`: We assume you want to be able to resolve DNS queries.
     workspaces:
       type: array
@@ -24,6 +23,10 @@ configuration:
       type: string
     gid:
       type: string
+
+    # If this is set to true, the `buildkite-agent` binary will be mapped in as `/usr/bin/buildkite-agent`.
+    map_buildkite_agent:
+      type: boolean
 
     # If this is set, causes all sorts of debugging information to be printed out
     verbose:
