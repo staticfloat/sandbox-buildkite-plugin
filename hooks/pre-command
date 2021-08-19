@@ -30,6 +30,11 @@ if ! [[ "${BUILDKITE_PLUGIN_SANDBOX_ROOTFS_TREEHASH}"  =~ ^[[:xdigit:]]{40}$ ]];
     die "Sandbox rootfs treehash not 40 hexadecimal characters"
 fi
 
+# Ensure that the General registry is downloaded
+echo "--- Ensuring that the General registry is downloaded"
+julia "${SANDBOX_REPO}/lib/ensure_general_registry.jl"
+
+
 # Install `Sandbox` and `Artifacts` globally
 echo "--- Instantiating sandbox environment"
 julia --project="${SANDBOX_REPO}/lib" -e "using Pkg; Pkg.instantiate()"
