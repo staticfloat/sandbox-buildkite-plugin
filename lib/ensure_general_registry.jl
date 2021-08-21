@@ -6,7 +6,7 @@ function registry_paths(; registry_name::String)
     registry_dir          = joinpath(registries_parent_dir, registry_name)
     nounpack_tarball      = joinpath(registries_parent_dir, "$(registry_name).tar.gz")
     nounpack_toml         = joinpath(registries_parent_dir, "$(registry_name).toml")
-    paths = (; registry_dir, nounpack_tarball, nounpack_toml)
+    paths = (; registries_parent_dir, registry_dir, nounpack_tarball, nounpack_toml)
     return paths
 end
 
@@ -23,9 +23,10 @@ end
 
 function registry_exists_locally(registry_name::String = "General")
     paths = registry_paths(; registry_name)
-    registry_dir     = paths.registry_dir
-    nounpack_tarball = paths.nounpack_tarball
-    nounpack_toml    = paths.nounpack_toml
+    registries_parent_dir = paths.registries_parent_dir
+    registry_dir          = paths.registry_dir
+    nounpack_tarball      = paths.nounpack_tarball
+    nounpack_toml         = paths.nounpack_toml
 
     if !isdir(registries_parent_dir)
         @info "No registries found locally"
