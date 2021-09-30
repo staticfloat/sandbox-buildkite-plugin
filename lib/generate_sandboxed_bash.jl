@@ -31,7 +31,7 @@ end
 # depending on the `collect_delay` set in the pipeline, it may stay
 # around for a while.  This works because `bind_artifact!()` internally
 # writes into `artifact_usage.toml` in our depot, which informs `gc()`.
-temp_artifact_toml = joinpath(mktempdir(prefix="sandbox-buildkite-plugin", cleanup=false), "Artifacts.toml")
+temp_artifact_toml = joinpath(mktempdir(prefix="sandbox-buildkite-plugin-", cleanup=false), "Artifacts.toml")
 Pkg.Artifacts.bind_artifact!(temp_artifact_toml, "rootfs", rootfs_treehash)
 
 # Helper to map in a directory that is defined within an environment variable
