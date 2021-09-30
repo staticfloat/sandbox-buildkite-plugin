@@ -26,6 +26,14 @@ if !Pkg.Artifacts.artifact_exists(rootfs_treehash)
     Pkg.Artifacts.download_artifact(rootfs_treehash, rootfs_url, nothing; verbose);
 end
 
+# Create an Artifacts.toml file pointing to this rootfs treehash.
+# The file itself will be deleted after this pipeline finishes, but
+# depending on the `collect_delay` set in the pipeline, it may stay
+# around for a while.  This works because `bind_artifact!()` internally
+# writes into `artifact_usage.toml` in our depot, which informs `gc()`.
+temp_artifact_toml = joinpath(mktempdir(prefix="sandbox-buildkite-plugin", cleanup=false), "Artifacts.toml")
+Pkg.Artifacts.bind_artifact!(temp_artifact_toml, "rootfs", rootfs_treehash)
+
 # Helper to map in a directory that is defined within an environment variable
 # if that variable is set, and it's pointing to a real directory.
 function add_env_dir!(dict, env_var; default=nothing)
