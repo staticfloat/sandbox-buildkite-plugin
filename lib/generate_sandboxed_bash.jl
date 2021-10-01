@@ -26,6 +26,13 @@ if !Pkg.Artifacts.artifact_exists(rootfs_treehash)
     Pkg.Artifacts.download_artifact(rootfs_treehash, rootfs_url, nothing; verbose);
 end
 
+# Double-check that this actually downloaded properly, as a 404 can silently fail!
+if !Pkg.Artifacts.artifact_exists(rootfs_treehash)
+    @error("Unable to download rootfs!", treehash=bytes2hex(rootfs_treehash), url=rootfs_url)
+    run(`buildkite-agent annotate --style=error --context=$(bytes2hex(rootfs_treehash)) "Unable to download rootfs from '$(rootfs_url)'"`)
+    exit(1)
+end
+
 # Create an Artifacts.toml file pointing to this rootfs treehash.
 # The file itself will be deleted after this pipeline finishes, but
 # depending on the `collect_delay` set in the pipeline, it may stay
