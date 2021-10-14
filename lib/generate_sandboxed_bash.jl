@@ -23,7 +23,10 @@ gid = parse(Int, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_GID", string(Sandbox.getgid(
 # Might as well ensure that the artifact exists now
 if !Pkg.Artifacts.artifact_exists(rootfs_treehash)
     println("--- Downloading rootfs");
-    Pkg.Artifacts.download_artifact(rootfs_treehash, rootfs_url, nothing; verbose=true);
+    # Make sure we enable logging for Artifacts
+    withenv("JULIA_DEBUG" => "Artifacts") do
+        Pkg.Artifacts.download_artifact(rootfs_treehash, rootfs_url, nothing; verbose=true)
+    end
 end
 
 # Double-check that this actually downloaded properly, as a 404 can silently fail!
