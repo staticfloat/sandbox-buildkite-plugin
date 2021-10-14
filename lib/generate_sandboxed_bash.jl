@@ -28,8 +28,8 @@ end
 
 # Double-check that this actually downloaded properly, as a 404 can silently fail!
 if !Pkg.Artifacts.artifact_exists(rootfs_treehash)
-    @error("Unable to download rootfs!", treehash=bytes2hex(rootfs_treehash), url=rootfs_url)
-    run(`buildkite-agent annotate --style=error --context=$(bytes2hex(rootfs_treehash)) "Unable to download rootfs from '$(rootfs_url)'"`)
+    @error("Unable to download rootfs!", treehash=bytes2hex(rootfs_treehash.bytes), url=rootfs_url)
+    run(`buildkite-agent annotate --style=error --context=$(bytes2hex(rootfs_treehash.bytes)) "Unable to download rootfs from '$(rootfs_url)'"`)
     exit(1)
 end
 
