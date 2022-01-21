@@ -6,6 +6,12 @@ uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
 [[Artifacts]]
 uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
 
+[[Attr_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "b132f9aeb209b8790dcc286c857f300369219d8d"
+uuid = "1fd713ca-387f-5abc-8002-d8b8b1623b73"
+version = "2.5.1+0"
+
 [[Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
@@ -23,9 +29,9 @@ uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 
 [[JLLWrappers]]
 deps = ["Preferences"]
-git-tree-sha1 = "642a199af8b68253517b80bd3bfd17eb4e84df6e"
+git-tree-sha1 = "22df5b96feef82434b07327e2d3c770a9b21e023"
 uuid = "692b3bcd-3c85-4b1f-b108-f13ce0eb3210"
-version = "1.3.0"
+version = "1.4.0"
 
 [[LazyArtifacts]]
 deps = ["Artifacts", "Pkg"]
@@ -73,9 +79,9 @@ uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 
 [[Preferences]]
 deps = ["TOML"]
-git-tree-sha1 = "00cfd92944ca9c760982747e9a1d0d5d86ab1e5a"
+git-tree-sha1 = "2cf929d64681236a2e074ffafb8d568733d2e6af"
 uuid = "21216c6a-2e73-6563-6e65-726566657250"
-version = "1.2.2"
+version = "1.2.3"
 
 [[Printf]]
 deps = ["Unicode"]
@@ -93,10 +99,10 @@ uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
 
 [[Sandbox]]
-deps = ["LazyArtifacts", "Libdl", "Preferences", "Random", "SHA", "Scratch", "TOML", "Tar", "UserNSSandbox_jll"]
-git-tree-sha1 = "36cd9e7d56858dabcd6fd65a9414901443ceaea9"
+deps = ["LazyArtifacts", "Libdl", "Preferences", "Random", "SHA", "Scratch", "TOML", "Tar", "Tar_jll", "UserNSSandbox_jll"]
+git-tree-sha1 = "946348eb34fbc2aafaee9ea1b83d842e896093b0"
 uuid = "9307e30f-c43e-9ca7-d17c-c2dc59df670d"
-version = "1.0.1"
+version = "1.2.0"
 
 [[Scratch]]
 deps = ["Dates"]
@@ -118,6 +124,12 @@ uuid = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 deps = ["ArgTools", "SHA"]
 uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
 
+[[Tar_jll]]
+deps = ["Attr_jll", "Libdl", "Pkg"]
+git-tree-sha1 = "ef82618427a047cb434274e52361e745f8435eba"
+uuid = "9b64493d-8859-5bf3-93d7-7c32dd38186f"
+version = "1.32.0+0"
+
 [[UUIDs]]
 deps = ["Random", "SHA"]
 uuid = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
@@ -127,9 +139,9 @@ uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 
 [[UserNSSandbox_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
-git-tree-sha1 = "f89214f9bc411b306f160d45a4fdb541922d1935"
+git-tree-sha1 = "a3a3f3680b6129c1b34ca5a6b09201afbc7b7805"
 uuid = "b88861f7-1d72-59dd-91e7-a8cc876a4984"
-version = "2021.4.22+0"
+version = "2022.1.20+0"
 
 [[Zlib_jll]]
 deps = ["Libdl"]
