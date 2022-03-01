@@ -1,0 +1,49 @@
+steps:
+  - label: ":docker: Self tests"
+    agents:
+      queue: "juliaecosystem"
+      docker_capable: "true"
+      os: "linux"
+    commands: |
+      docker build -f tests/Dockerfile -t plugin_tester .
+      docker run --rm -ti plugin_tester
+
+  - label: ":desert: :toolbox: Basic sandboxing test"
+    agents:
+      queue: "juliaecosystem"
+      sandbox_capable: "true"
+    plugins:
+      - JuliaCI/julia#v1:
+          version: 1
+      # Use the current directory as the plugin source, so we're testing this version of `sandbox`
+      - "./.buildkite/plugins/sandbox":
+          rootfs_url: "https://github.com/staticfloat/Sandbox.jl/releases/download/debian-minimal-927c9e7f/debian_minimal.tar.gz"
+          rootfs_treehash: "5b44fab874ec426cad9b80b7dffd2b3f927c9e7f"
+    commands: |
+      [[ "$(grep PRETTY_NAME /etc/os-release | cut -d= -f2)" == "\"Debian GNU/Linux 10 (buster)\"" ]]
+
+  - label: ":desert: :toolbox: workspaces test"
+    agents:
+      queue: "juliaecosystem"
+      sandbox_capable: "true"
+    plugins:
+      - JuliaCI/julia#v1:
+          version: 1
+      # Create a file in the outside environment
+      - improbable-eng/metahook:
+          pre-command: |
+            echo "foo" > $${JULIA_DEPOT_PATH}/foo.tmp
+      # Use the current directory as the plugin source, so we're testing this version of `sandbox`
+      - "./.buildkite/plugins/sandbox":
+          rootfs_url: "https://github.com/staticfloat/Sandbox.jl/releases/download/debian-minimal-927c9e7f/debian_minimal.tar.gz"
+          rootfs_treehash: "5b44fab874ec426cad9b80b7dffd2b3f927c9e7f"
+          workspaces:
+            - "/cache:/cache"
+      # Clean up that temporary file
+      - improbable-eng/metahook:
+          post-command: |
+            rm -f $${JULIA_DEPOT_PATH}/foo.tmp
+    commands: |
+      # Ensure that our `workspaces` mapping above actually works
+      [[ -f $${JULIA_DEPOT_PATH}/foo.tmp ]]
+      [[ "$$(cat $${JULIA_DEPOT_PATH}/foo.tmp)" == "foo" ]]

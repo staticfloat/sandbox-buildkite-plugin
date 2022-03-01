@@ -22,7 +22,7 @@ steps:
           version: 1.6
       - staticfloat/sandbox:
           rootfs_url: "https://github.com/staticfloat/Sandbox.jl/releases/download/debian-minimal-927c9e7f/debian_minimal.tar.gz"
-          rootfs_treehash: "b0fbf90920c3eca7d9e452d8651346172a835635"
+          rootfs_treehash: "5b44fab874ec426cad9b80b7dffd2b3f927c9e7f"
     commands: |
       echo "this is running in a sandbox!"
 ```
