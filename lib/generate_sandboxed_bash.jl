@@ -15,7 +15,7 @@ end
 
 rootfs_url = ENV["BUILDKITE_PLUGIN_SANDBOX_ROOTFS_URL"]
 rootfs_treehash = Base.SHA1(ENV["BUILDKITE_PLUGIN_SANDBOX_ROOTFS_TREEHASH"])
-verbose = parse(Bool, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_VERBOSE", "false"))
+verbose = parse(Bool, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_VERBOSE", "true"))
 workspaces = [reverse(split(pair, ":")) for pair in extract_env_array("BUILDKITE_PLUGIN_SANDBOX_WORKSPACES")]
 uid = parse(Int, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_UID", string(Sandbox.getuid())))
 gid = parse(Int, get(ENV, "BUILDKITE_PLUGIN_SANDBOX_GID", string(Sandbox.getgid())))
