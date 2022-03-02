@@ -3,3 +3,6 @@ Artifacts = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Sandbox = "9307e30f-c43e-9ca7-d17c-c2dc59df670d"
 Scratch = "6c6a2e73-6563-6170-7368-637461726353"
+
+[compat]
+Sandbox = "1.2"
