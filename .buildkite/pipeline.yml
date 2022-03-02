@@ -1,13 +1,4 @@
 steps:
-  - label: ":docker: Self tests"
-    agents:
-      queue: "juliaecosystem"
-      docker_capable: "true"
-      os: "linux"
-    commands: |
-      docker build -f tests/Dockerfile -t plugin_tester .
-      docker run --rm -ti plugin_tester
-
   - label: ":desert: :toolbox: Basic sandboxing test"
     agents:
       queue: "juliaecosystem"
