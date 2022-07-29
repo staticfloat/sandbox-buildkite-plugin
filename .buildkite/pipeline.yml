@@ -3,6 +3,7 @@ steps:
     agents:
       queue: "juliaecosystem"
       sandbox_capable: "true"
+      arch: "x86_64"
     plugins:
       - JuliaCI/julia#v1:
           version: 1
@@ -23,6 +24,7 @@ steps:
     agents:
       queue: "juliaecosystem"
       sandbox_capable: "true"
+      arch: "x86_64"
     plugins:
       - JuliaCI/julia#v1:
           version: 1
