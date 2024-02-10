@@ -115,11 +115,11 @@ c = Sandbox.build_executor_command(exe, config, ``)
 # Write out `/bin/bash` wrapper script that just invokes our `sandbox` executable.
 open(ARGS[1], write=true) do io
     println(io, """
-    #!/bin/truebash
+    #!/bin/backup/bash
 
     # Don't sandbox `sandbox-buildkite-plugin` itself
     if [[ "\${BUILDKITE_PLUGIN_NAME}" == "SANDBOX" ]]; then
-        exec /bin/truebash "\$@"
+        exec /bin/backup/bash "\$@"
     fi
 
     # Ensure that PATH contains the bare minimum that any sane rootfs might need
