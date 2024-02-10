@@ -1,4 +1,4 @@
-#!/bin/truebash
+#!/bin/backup/bash
 
 # Determine the persistence directory used and clear it out if it exists
 PERSIST_DIR=$(sed -n -E 's/.*--persist ([^ ]+).*/\1/p' </bin/bash 2>/dev/null)
@@ -9,4 +9,5 @@ fi
 
 # Un-do our crazy `bash` override
 echo "Removing sandbox /bin/bash overrride"
-mv /bin/truebash /bin/bash
+mv /bin/backup/bash /bin/bash
+rmdir /bin/backup || true
